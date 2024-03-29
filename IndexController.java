@@ -26,15 +26,6 @@ public class IndexController {
         Optional<Usuario> usuario = usuarioRepository.findById(id);
         return new ResponseEntity(usuario.get(), HttpStatus.OK);
     }
-
-    @GetMapping(value = "/", produces = "application/json")
-    public ResponseEntity<Usuario> init() {
-            Usuario usuario = new Usuario();
-            usuario.setNome("teste");
-            usuario.setEmail("teste@teste.com");
-            usuario.setSenha("teste");
-            return new ResponseEntity<Usuario>(usuario, HttpStatus.OK);
-        }
             
             
 }
