@@ -1,0 +1,7 @@
+version: '3.7'
+
+services:
+  eclipse-temurin-17-jdk:
+    image: jtim/docker-docker-compose-jdk:24.0.2-compose-2.18.1-jdk-17
+    build:
+      context: java17/eclipse-temurin
