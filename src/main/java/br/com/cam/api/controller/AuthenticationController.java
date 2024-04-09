@@ -40,18 +40,27 @@ public class AuthenticationController {
         return ResponseEntity.ok().build();
     }
 
-    @PostMapping("/register")
+     @PostMapping("/register")
     public ResponseEntity register(@RequestBody @Valid RegisterDTO data){
-        var usernamePassword = new UsernamePasswordAuthenticationToken(data.login(), data.password());
-        System.out.println(usernamePassword);
-        try{
-            var auth = this.authenticationManager.authenticate(usernamePassword);
-        } catch(Exception e){
-            System.out.println("Erro:   ");
-            System.out.println(e);
-            return ResponseEntity.internalServerError().build();
-        }
+        // Primeiro verifica se já não existe outro usuário cadastrado com o mesmo login
+        if(this.usuarioRepository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
+
+        // Caso não exista, vamos encriptar a senha para salvar no BD. A senha bruta do usuário 
+        // NÃO DEVE SER INSERIDA NO BD POR MEDIDAS DE SEGURANÇA.
+
+
+        String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
+        System.out.println(data.login());
+        System.out.println(encryptedPassword);
+        System.out.println(data.role());
+
+        Usuario newUser = new Usuario(data.nome() ,data.login(), encryptedPassword, data.role());
+
+        this.usuarioRepository.save(newUser);
+
         return ResponseEntity.ok().build();
     }
+
+    
 
 }
