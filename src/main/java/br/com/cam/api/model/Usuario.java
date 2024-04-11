@@ -6,15 +6,22 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.Collection;
 
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.UniqueConstraint;
 
 @Entity
 public class Usuario implements UserDetails{
@@ -26,6 +33,30 @@ public class Usuario implements UserDetails{
     private String email;
     private String senha;
     private UserRole role;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "cameras_usuarios",
+                uniqueConstraints = @UniqueConstraint (
+                    columnNames = {"camera_id", "usuario_id"},
+                    name = "unique_user_camera"
+                ),
+                joinColumns = @JoinColumn(name = "usuario_id",
+                    referencedColumnName = "id",
+                    table = "usuario",
+                    unique = false
+                ),
+                inverseJoinColumns = @JoinColumn (
+                    name = "camera_id",
+                    referencedColumnName = "id",
+                    table = "camera",
+                    unique = false
+                    //updatable = false,
+                )
+    )
+    private List<Camera> cameras = new ArrayList<Camera>();
+
+    
 
     @OneToMany(mappedBy = "usuario", orphanRemoval = true, cascade = CascadeType.ALL)
     private List<Telefone> telefones = new ArrayList<Telefone>();
@@ -60,6 +91,14 @@ public class Usuario implements UserDetails{
 
     public void setId(Long id){
         this.id = id;
+    }
+
+    public List<Camera> getCameras() {
+        return cameras;
+    }
+
+    public void setCameras(List<Camera> cameras) {
+        this.cameras = cameras;
     }
 
     public String getEmail() {
