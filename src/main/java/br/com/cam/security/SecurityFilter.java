@@ -28,6 +28,7 @@ public class SecurityFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         // Obtém o token da requisição
         var token = this.recoverToken(request);
+        System.out.println(token);
         if (token != null) {
 
             var login = tokenService.validateToken(token);
@@ -50,7 +51,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         if (authHeader == null){
             return null;
         }
-        return authHeader.replace("Bearer", "");
+        return authHeader.replace("Bearer ", "");
 
     }
 

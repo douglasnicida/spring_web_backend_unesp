@@ -14,23 +14,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import br.com.cam.api.model.Produto;
 import br.com.cam.api.repository.ProdutoRepository;
 
-@Controller
+@Controller("ProdutoController")
 @RequestMapping(value = "/produto")
 public class ProdutoController {
+
     @Autowired
     private ProdutoRepository produtoRepository;
 
-    @GetMapping(value = "/", produces="application/json")
+    @GetMapping(value="/", produces="application/json")
     public ResponseEntity<List<Produto>> getAllProducts (){
         List<Produto> produtos = (List<Produto>) this.produtoRepository.findAll();
 
         return new ResponseEntity<List<Produto>>(produtos, HttpStatus.OK);
     }
-    
-    @PostMapping(value = "/", produces="application/json")
-    public ResponseEntity<Produto> addProduct (@RequestBody Produto produto){
+
+    @PostMapping(value="/", produces="application/json")
+    public ResponseEntity<Produto> insertNewProduct (@RequestBody Produto produto){
+
         Produto produtoSalvo = produtoRepository.save(produto);
 
         return new ResponseEntity<Produto>(produtoSalvo, HttpStatus.OK);
-    }
+    }    
+
 }
