@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.cam.api.model.AuthenticationDTO;
+import br.com.cam.api.model.Fisica;
 import br.com.cam.api.model.LoginResponseDTO;
 import br.com.cam.api.model.RegisterDTO;
 import br.com.cam.api.model.Usuario;
@@ -66,7 +67,7 @@ public class AuthenticationController {
         System.out.println(encryptedPassword);
         System.out.println(data.role());
 
-        Usuario newUser = new Usuario(data.nome() ,data.login(), encryptedPassword, data.role());
+        Fisica newUser = new Fisica(data.login() ,encryptedPassword, data.role(), "teste", "testee");
 
         this.usuarioRepository.save(newUser);
 
