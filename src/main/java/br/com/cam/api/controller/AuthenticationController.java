@@ -19,6 +19,7 @@ import br.com.cam.api.repository.UsuarioRepository;
 import br.com.cam.security.TokenService;
 import jakarta.validation.Valid;
 
+
 @RestController
 @RequestMapping("auth")
 public class AuthenticationController {
