@@ -29,10 +29,11 @@ public class ApiApplication {
 		SpringApplication.run(ApiApplication.class, args);
 	}
 
+	public void addCorsMapping(CorsRegistry registry){
+		registry.addMapping("/camera/**")
+		.allowedMethods("*")
+		.allowedOrigins("*");
+	}
+
 }
 
-public void addCorsMapping(CorsRegistry registry){
-	registry.addMapping("/camera/**")
-	.allowedMethods("*")
-	.allowedOrigins("*");
-}
